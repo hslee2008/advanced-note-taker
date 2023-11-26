@@ -155,11 +155,20 @@ export default function Home({ navigation }) {
           <Menu.Item
             leadingIcon="pencil"
             onPress={() => {
-              navigation.navigate({
-                name: "메모",
-                params: { title: itemLongPressed },
-              });
-              setShowMenu(false);
+              if (passwordList.includes(itemLongPressed)) {
+                navigation.navigate({
+                  name: "암호 메모",
+                  params: {
+                    title: itemLongPressed,
+                    password: password[passwordList.indexOf(itemLongPressed)],
+                  },
+                });
+              } else {
+                navigation.navigate({
+                  name: "메모",
+                  params: { title: itemLongPressed },
+                });
+              }
             }}
             title="편집"
           />
@@ -169,7 +178,7 @@ export default function Home({ navigation }) {
               DeleteItem();
               setShowMenu(false);
             }}
-            title="석제"
+            title="삭제"
           />
           <Menu.Item
             leadingIcon="close"
