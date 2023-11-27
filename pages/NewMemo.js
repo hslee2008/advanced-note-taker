@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { TextInput, FAB, Checkbox } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Home({ navigation }) {
+export default function Home({ navigation, route }) {
   const [memo, setMemo] = useState("");
   const [title, setTitle] = useState("");
   const [checked, setChecked] = useState(false);
@@ -11,30 +11,26 @@ export default function Home({ navigation }) {
   const [date, setDate] = useState(new Date());
 
   const save = async () => {
-    try {
-      await AsyncStorage.setItem(
+    await AsyncStorage.setItem(
+      title,
+      JSON.stringify({
         title,
-        JSON.stringify({
-          title,
-          memo,
-          checked,
-          password,
-          date: date.toLocaleDateString(),
-        })
-      );
+        memo,
+        checked,
+        password,
+        date: date.toLocaleDateString(),
+      })
+    );
 
-      const value = await AsyncStorage.getItem("@advancedNoteTakerLists");
-      const lists = JSON.parse(value ?? "[]");
+    const value = await AsyncStorage.getItem("@advancedNoteTakerLists");
+    const lists = JSON.parse(value ?? "[]");
 
-      await AsyncStorage.setItem(
-        "@advancedNoteTakerLists",
-        JSON.stringify([...lists, title])
-      );
+    await AsyncStorage.setItem(
+      "@advancedNoteTakerLists",
+      JSON.stringify([...lists, title])
+    );
 
-      navigation.navigate("홈");
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate("홈");
   };
 
   return (

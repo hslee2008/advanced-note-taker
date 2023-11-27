@@ -11,28 +11,32 @@ export default function Home({ navigation, route }) {
   const [password, setPassword] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const update = () => {
-    if (title !== route.params.title) {
-      updateWithChangedTitle();
-    } else {
-      updateWithSameTitle();
-    }
-  }
-
-  const updateWithChangedTitle = async () => {
+  const update = async () => {
     try {
       await AsyncStorage.removeItem(route.params.title);
 
-      await AsyncStorage.setItem(
-        title,
-        JSON.stringify({
+      if (checked)
+        await AsyncStorage.setItem(
           title,
-          memo,
-          checked,
-          password,
-          date: date.toLocaleDateString(),
-        })
-      );
+          JSON.stringify({
+            title,
+            memo,
+            checked,
+            password,
+            date: new Date().toLocaleDateString(),
+          })
+        );
+      else
+        await AsyncStorage.setItem(
+          title,
+          JSON.stringify({
+            title,
+            memo,
+            checked,
+            password: "",
+            date: new Date().toLocaleDateString(),
+          })
+        );
 
       const value = await AsyncStorage.getItem("@advancedNoteTakerLists");
       const lists = JSON.parse(value ?? "[]");
@@ -44,33 +48,6 @@ export default function Home({ navigation, route }) {
       await AsyncStorage.setItem(
         "@advancedNoteTakerLists",
         JSON.stringify([...lists])
-      );
-
-      navigation.navigate("홈");
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const updateWithSameTitle = async () => {
-    try {
-      await AsyncStorage.setItem(
-        title,
-        JSON.stringify({
-          title,
-          memo,
-          checked,
-          password,
-          date: date.toLocaleDateString(),
-        })
-      );
-
-      const value = await AsyncStorage.getItem("@advancedNoteTakerLists");
-      const lists = JSON.parse(value ?? "[]");
-
-      await AsyncStorage.setItem(
-        "@advancedNoteTakerLists",
-        JSON.stringify([...lists, title])
       );
 
       navigation.navigate("홈");

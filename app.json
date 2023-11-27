@@ -11,19 +11,24 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hyunseung1005.advancednotetaker",
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "이 앱은 음성 인식을 사용합니다.",
+        "NSCameraUsageDescription": "이 앱은 카메라를 사용합니다."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.hyunseung1005.advancednotetaker"
+      "package": "com.hyunseung1005.advancednotetaker",
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
+    "plugins": ["@react-native-voice/voice"],
     "web": {
       "favicon": "./assets/favicon.png"
     },
